@@ -105,12 +105,15 @@ namespace P01DAW_2022DC650_2021RJ650_Reservas.Controllers
         [HttpPost("ValidarCredenciales")]
         public async Task<ActionResult<bool>> ValidarCredenciales([FromBody] Usuario usuarioLogin)
         {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == usuarioLogin.Correo && u.Contraseña == usuarioLogin.Contraseña);
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Correo == usuarioLogin.Correo && u.Contraseña == usuarioLogin.Contraseña);
+
             if (usuario == null)
             {
-                return Unauthorized();
+                return Unauthorized(); // Devuelve 401 si el usuario no existe o la contraseña es incorrecta.
             }
-            return Ok(true);
+
+            return Ok(true); // Si las credenciales son correctas, devuelve 200 con true.
         }
     }
 }
